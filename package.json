@@ -1,5 +1,8 @@
 {
   "name": "editor",
+  "scripts": {
+    "w": "pnpm --filter '@repo/client'"
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4"
   },

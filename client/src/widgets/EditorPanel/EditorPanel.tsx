@@ -1,18 +1,25 @@
-import { ChangeLanguage } from '@/features/CodeEditor/ChangeLanguage'
-import { CodeEditor } from '@/features/CodeEditor/CodeEditor'
-import { useCodeEditorStore } from '@/features/CodeEditor/store/useCodeEditorStore'
+import { ChangeLanguage } from "@/features/CodeEditor/components/ChangeLanguage";
+import { CodeEditor } from "@/features/CodeEditor/CodeEditor";
+import { ChangeTheme } from "@/features/CodeEditor/components/ChangeTheme";
+import { RunCode } from "@/features/CodeEditor/components/RunCode";
+import { SendCode } from '@/features/CodeEditor/components/SendCode';
 
 export const EditorPanel = () => {
-  const language = useCodeEditorStore((state) => state.language)
-  console.log(language)
   return (
     <div className="flex flex-col gap-1">
-      <div>
+      <div className="w-full flex gap-4">
         <ChangeLanguage />
+        <ChangeTheme />
+        <RunCode />
+        <SendCode />
       </div>
       <div>
-        <CodeEditor language={language} />
+        <CodeEditor
+          // onChange={(value) => {
+          //   console.log(value);
+          // }}
+        />
       </div>
     </div>
-  )
-}
+  );
+};
