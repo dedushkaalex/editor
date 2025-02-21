@@ -1,0 +1,4 @@
+packages:
+  # include the following directories in the workspace
+  - "client"
+

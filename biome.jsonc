@@ -1,0 +1,127 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true, // Включает поддержку системы контроля версий
+    "clientKind": "git", // Использует Git
+    "useIgnoreFile": true, // Учитывает файлы .gitignore
+    "defaultBranch": "main" // Основная ветка по умолчанию
+  },
+  "organizeImports": {
+    "enabled": false // Отключает автоупорядочивание импортов
+  },
+  "formatter": {
+    "enabled": true, // Включает автоформатирование
+    "formatWithErrors": true, // Форматирует код даже при наличии ошибок
+    "indentStyle": "space", // Использует пробелы вместо табуляции
+    "indentWidth": 2, // Отступ — 2 пробела
+    "lineEnding": "lf", // Окончание строк — LF (Linux/macOS стиль)
+    "lineWidth": 120 // Максимальная длина строки — 120 символов
+  },
+  "linter": {
+    "enabled": true, // Включает линтер
+    "rules": {
+      "recommended": true, // Включает рекомендуемые правила
+      "correctness": {
+        // Это правило мешает при разработке (можно включить в CI)
+        "noUnusedImports": "off"
+      },
+      "style": {
+        "noDefaultExport": "off", // Разрешает экспорт по умолчанию
+        "noNonNullAssertion": { "level": "warn" }, // Предупреждение для `!` (non-null assertion)
+        "useImportType": { "level": "error" } // Ошибка при использовании `import` вместо `import type`
+      },
+      "complexity": {
+        // Отключает правило, так как стрелочные функции ведут себя иначе, чем обычные
+        "useArrowFunction": { "fix": "none", "level": "off" }
+      },
+      "a11y": {
+        // Большинство SVG-иконок скрыты от скринридеров, правило бесполезно
+        "noSvgWithoutTitle": {
+          "level": "off"
+        },
+        // Странное правило про семантические элементы, отключаем
+        "useSemanticElements": {
+          "level": "off"
+        },
+        "useButtonType": "off"
+      },
+      "suspicious": {
+        // Предупреждение для `key={index}`, так как это допустимо в простых случаях
+        "noArrayIndexKey": { "level": "warn" }
+      },
+      "nursery": {} // Место для экспериментальных правил
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "enabled": true,
+      "quoteStyle": "single", // Использует одинарные кавычки
+      "trailingCommas": "all", // Добавляет запятые в конце списков
+      "semicolons": "asNeeded", // Точки с запятой — только при необходимости
+      "jsxQuoteStyle": "double" // В JSX используются двойные кавычки
+    }
+  },
+  "json": {
+    "parser": {
+      "allowComments": true, // Разрешает комментарии в JSON
+      "allowTrailingCommas": false // Запрещает завершающие запятые
+    },
+    "formatter": {
+      "enabled": true // Включает автоформатирование JSON
+    }
+  },
+  "css": {
+    "parser": {
+      "allowWrongLineComments": false, // Запрещает некорректные комментарии
+      "cssModules": false // Не использует CSS-модули
+    }
+  },
+  "overrides": [
+    {
+      "include": ["client/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "useLiteralKeys": "off" // Отключает правило для динамических ключей в объектах
+          }
+        }
+      }
+    },
+    {
+      "include": ["apps/**/router.tsx"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useJsxKeyInIterable": "off" // Отключает ошибку, когда JSX-компоненты находятся в кортежах
+          }
+        }
+      }
+    },
+    {
+      "include": ["**/*.test.ts", "**/*.test.tsx"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noForEach": "off" // Разрешает `forEach` в тестах
+          },
+          "correctness": {
+            "noUnusedImports": "off" // Разрешает неиспользуемые импорты в тестах
+          },
+          "suspicious": {
+            "noExplicitAny": "off" // Разрешает `any` в тестах
+          }
+        }
+      }
+    }
+  ],
+  "files": {
+    "ignore": [
+      // Biome форматирует package.json иначе, чем pnpm/npm, поэтому исключаем
+      "package.json",
+      "**/node_modules",
+      "**/migrations",
+      "**/coverage",
+      "**/storybook-static"
+    ]
+  }
+}
